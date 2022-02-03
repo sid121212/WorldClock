@@ -1,0 +1,619 @@
+<html>
+<head> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>Card Clock Bootstrap 4 | BootstrapTema</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta.2/css/bootstrap.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<style>
+body{
+background: #C9D6FF;
+background: -webkit-linear-gradient(to right, #E2E2E2, #C9D6FF);
+background: linear-gradient(to right, #E2E2E2, #C9D6FF);
+}
+</style>
+<script language="JavaScript">
+  function worldClock(zone, region){
+  var dst = 0
+  var time = new Date()
+  var gmtMS = time.getTime() + (time.getTimezoneOffset() * 60000)
+  var gmtTime = new Date(gmtMS)
+  var day = gmtTime.getDate()
+  var month = gmtTime.getMonth()
+  var year = gmtTime.getYear()
+  if(year < 1000){
+  year += 1900
+  }
+  var monthArray = new Array("January", "February", "March", "April", "May", "June", "July", "August", 
+          "September", "October", "November", "December")
+  var monthDays = new Array("31", "28", "31", "30", "31", "30", "31", "31", "30", "31", "30", "31")
+  if (year%4 == 0){
+  monthDays = new Array("31", "29", "31", "30", "31", "30", "31", "31", "30", "31", "30", "31")
+  }
+  if(year%100 == 0 && year%400 != 0){
+  monthDays = new Array("31", "28", "31", "30", "31", "30", "31", "31", "30", "31", "30", "31")
+  }
+  
+  var hr = gmtTime.getHours() + zone
+  var min = gmtTime.getMinutes()
+  var sec = gmtTime.getSeconds()
+  
+  if (hr >= 24){
+  hr = hr-24
+  day -= -1
+  }
+  if (hr < 0){
+  hr -= -24
+  day -= 1
+  }
+  if (hr < 10){
+  hr = " " + hr
+  }
+  if (min < 10){
+  min = "0" + min
+  }
+  if (sec < 10){
+  sec = "0" + sec
+  }
+  if (day <= 0){
+  if (month == 0){
+    month = 11
+    year -= 1
+    }
+    else{
+    month = month -1
+    }
+  day = monthDays[month]
+  }
+  if(day > monthDays[month]){
+    day = 1
+    if(month == 11){
+    month = 0
+    year -= -1
+    }
+    else{
+    month -= -1
+    }
+  }
+  if (region == "NAmerica"){
+    var startDST = new Date()
+    var endDST = new Date()
+    startDST.setMonth(3)
+    startDST.setHours(2)
+    startDST.setDate(1)
+    var dayDST = startDST.getDay()
+    if (dayDST != 0){
+      startDST.setDate(8-dayDST)
+      }
+      else{
+      startDST.setDate(1)
+      }
+    endDST.setMonth(9)
+    endDST.setHours(1)
+    endDST.setDate(31)
+    dayDST = endDST.getDay()
+    endDST.setDate(31-dayDST)
+    var currentTime = new Date()
+    currentTime.setMonth(month)
+    currentTime.setYear(year)
+    currentTime.setDate(day)
+    currentTime.setHours(hr)
+    if(currentTime >= startDST && currentTime < endDST){
+      dst = 1
+      }
+  }
+  if (region == "Europe"){
+    var startDST = new Date()
+    var endDST = new Date()
+    startDST.setMonth(2)
+    startDST.setHours(1)
+    startDST.setDate(31)
+    var dayDST = startDST.getDay()
+    startDST.setDate(31-dayDST)
+    endDST.setMonth(9)
+    endDST.setHours(0)
+    endDST.setDate(31)
+    dayDST = endDST.getDay()
+    endDST.setDate(31-dayDST)
+    var currentTime = new Date()
+    currentTime.setMonth(month)
+    currentTime.setYear(year)
+    currentTime.setDate(day)
+    currentTime.setHours(hr)
+    if(currentTime >= startDST && currentTime < endDST){
+      dst = 1
+      }
+  }
+  
+  if (region == "SAmerica"){
+    var startDST = new Date()
+    var endDST = new Date()
+    startDST.setMonth(9)
+    startDST.setHours(0)
+    startDST.setDate(1)
+    var dayDST = startDST.getDay()
+    if (dayDST != 0){
+      startDST.setDate(22-dayDST)
+      }
+      else{
+      startDST.setDate(15)
+      }
+    endDST.setMonth(1)
+    endDST.setHours(11)
+    endDST.setDate(1)
+    dayDST = endDST.getDay()
+    if (dayDST != 0){
+      endDST.setDate(21-dayDST)
+      }
+      else{
+      endDST.setDate(14)
+      }
+    var currentTime = new Date()
+    currentTime.setMonth(month)
+    currentTime.setYear(year)
+    currentTime.setDate(day)
+    currentTime.setHours(hr)
+    if(currentTime >= startDST || currentTime < endDST){
+      dst = 1
+      }
+  }
+  if (region == "Cairo"){
+    var startDST = new Date()
+    var endDST = new Date()
+    startDST.setMonth(3)
+    startDST.setHours(0)
+    startDST.setDate(30)
+    var dayDST = startDST.getDay()
+    if (dayDST < 5){
+      startDST.setDate(28-dayDST)
+      }
+      else {
+      startDST.setDate(35-dayDST)
+      }
+    endDST.setMonth(8)
+    endDST.setHours(11)
+    endDST.setDate(30)
+    dayDST = endDST.getDay()
+    if (dayDST < 4){
+      endDST.setDate(27-dayDST)
+      }
+      else{
+      endDST.setDate(34-dayDST)
+      }
+    var currentTime = new Date()
+    currentTime.setMonth(month)
+    currentTime.setYear(year)
+    currentTime.setDate(day)
+    currentTime.setHours(hr)
+    if(currentTime >= startDST && currentTime < endDST){
+      dst = 1
+      }
+  }
+  if (region == "Israel"){
+    var startDST = new Date()
+    var endDST = new Date()
+    startDST.setMonth(3)
+    startDST.setHours(2)
+    startDST.setDate(1)
+    endDST.setMonth(8)
+    endDST.setHours(2)
+    endDST.setDate(25)
+    dayDST = endDST.getDay()
+    if (dayDST != 0){
+    endDST.setDate(32-dayDST)
+    }
+    else{
+    endDST.setDate(1)
+    endDST.setMonth(9)
+    }
+    var currentTime = new Date()
+    currentTime.setMonth(month)
+    currentTime.setYear(year)
+    currentTime.setDate(day)
+    currentTime.setHours(hr)
+    if(currentTime >= startDST && currentTime < endDST){
+      dst = 1
+      }
+  }
+  if (region == "Beirut"){
+    var startDST = new Date()
+    var endDST = new Date()
+    startDST.setMonth(2)
+    startDST.setHours(0)
+    startDST.setDate(31)
+    var dayDST = startDST.getDay()
+    startDST.setDate(31-dayDST)
+    endDST.setMonth(9)
+    endDST.setHours(11)
+    endDST.setDate(31)
+    dayDST = endDST.getDay()
+    endDST.setDate(30-dayDST)
+    var currentTime = new Date()
+    currentTime.setMonth(month)
+    currentTime.setYear(year)
+    currentTime.setDate(day)
+    currentTime.setHours(hr)
+    if(currentTime >= startDST && currentTime < endDST){
+      dst = 1
+      }
+  }
+  if (region == "Baghdad"){
+    var startDST = new Date()
+    var endDST = new Date()
+    startDST.setMonth(3)
+    startDST.setHours(3)
+    startDST.setDate(1)
+    endDST.setMonth(9)
+    endDST.setHours(3)
+    endDST.setDate(1)
+    dayDST = endDST.getDay()
+      var currentTime = new Date()
+    currentTime.setMonth(month)
+    currentTime.setYear(year)
+    currentTime.setDate(day)
+    currentTime.setHours(hr)
+    if(currentTime >= startDST && currentTime < endDST){
+      dst = 1
+      }
+  }
+  if (region == "Australia"){
+    var startDST = new Date()
+    var endDST = new Date()
+    startDST.setMonth(9)
+    startDST.setHours(2)
+    startDST.setDate(31)
+    var dayDST = startDST.getDay()
+    startDST.setDate(31-dayDST)
+    endDST.setMonth(2)
+    endDST.setHours(2)
+    endDST.setDate(31)
+    dayDST = endDST.getDay()
+    endDST.setDate(31-dayDST)
+    var currentTime = new Date()
+    currentTime.setMonth(month)
+    currentTime.setYear(year)
+    currentTime.setDate(day)
+    currentTime.setHours(hr)
+    if(currentTime >= startDST || currentTime < endDST){
+      dst = 1
+      }
+  }
+  
+    
+  if (dst == 1){
+    hr -= -1
+    if (hr >= 24){
+    hr = hr-24
+    day -= -1
+    }
+    if (hr < 10){
+    hr = " " + hr
+    }
+    if(day > monthDays[month]){
+    day = 1
+    if(month == 11){
+    month = 0
+    year -= -1
+    }
+    else{
+    month -= -1
+    }
+    }
+  return monthArray[month] + " " + day + ", " + year + "<br>" + hr + ":" + min + ":" + sec + " DST"
+  }
+  else{
+  return monthArray[month] + " " + day + ", " + year + "<br>" + hr + ":" + min + ":" + sec
+  }
+  }
+  
+  function worldClockZone(){
+  document.getElementById("GMT").innerHTML = worldClock(0, "Greenwich")
+  document.getElementById("Vancouver").innerHTML = worldClock(-8, "NAmerica")
+  document.getElementById("SanFrancisco").innerHTML = worldClock(-8, "NAmerica")
+  document.getElementById("Seattle").innerHTML = worldClock(-8, "NAmerica")
+  document.getElementById("LosAngeles").innerHTML = worldClock(-8, "NAmerica")
+  document.getElementById("Denver").innerHTML = worldClock(-7, "NAmerica")
+  document.getElementById("MexicoCity").innerHTML = worldClock(-6, "NAmerica")
+  document.getElementById("Houston").innerHTML = worldClock(-6, "NAmerica")
+  document.getElementById("Minneapolis").innerHTML = worldClock(-6, "NAmerica")
+  document.getElementById("NewOrleans").innerHTML = worldClock(-6, "NAmerica")
+  document.getElementById("Chicago").innerHTML = worldClock(-6, "NAmerica")
+  document.getElementById("Montgomery").innerHTML = worldClock(-6, "NAmerica")
+  document.getElementById("Indianapolis").innerHTML = worldClock(-5, "NAmerica")
+  document.getElementById("Atlanta").innerHTML = worldClock(-5, "NAmerica")
+  document.getElementById("Detroit").innerHTML = worldClock(-5, "NAmerica")
+  document.getElementById("Miami").innerHTML = worldClock(-5, "NAmerica")
+  document.getElementById("WashingtonDC").innerHTML = worldClock(-5, "NAmerica")
+  document.getElementById("Philadelphia").innerHTML = worldClock(-5, "NAmerica")
+  document.getElementById("NewYork").innerHTML = worldClock(-5, "NAmerica")
+  document.getElementById("Montreal").innerHTML = worldClock(-5, "NAmerica")
+  document.getElementById("Boston").innerHTML = worldClock(-5, "NAmerica")
+  document.getElementById("BuenosAires").innerHTML = worldClock(-3, "BuenosAires")
+  document.getElementById("SaoPaulo").innerHTML = worldClock(-3, "SAmerica")
+  document.getElementById("RioDeJaneiro").innerHTML = worldClock(-3, "SAmerica")
+  document.getElementById("Lisbon").innerHTML = worldClock(0, "Europe")
+  document.getElementById("Dublin").innerHTML = worldClock(0, "Europe")
+  document.getElementById("London").innerHTML = worldClock(0, "Europe")
+  document.getElementById("Madrid").innerHTML = worldClock(1, "Europe")
+  document.getElementById("Barcelona").innerHTML = worldClock(1, "Europe")
+  document.getElementById("Paris").innerHTML = worldClock(1, "Europe")
+  document.getElementById("Brussels").innerHTML = worldClock(1, "Europe")
+  document.getElementById("Amsterdam").innerHTML = worldClock(1, "Europe")
+  document.getElementById("Frankfurt").innerHTML = worldClock(1, "Europe")
+  document.getElementById("Rome").innerHTML = worldClock(1, "Europe")
+  document.getElementById("Berlin").innerHTML = worldClock(1, "Europe")
+  document.getElementById("Prague").innerHTML = worldClock(1, "Europe")
+  document.getElementById("Vienna").innerHTML = worldClock(1, "Europe")
+  document.getElementById("Stockholm").innerHTML = worldClock(1, "Europe")
+  document.getElementById("Athens").innerHTML = worldClock(2, "Europe")
+  document.getElementById("Helsinki").innerHTML = worldClock(2, "Europe")
+  document.getElementById("Minsk").innerHTML = worldClock(2, "Europe")
+  document.getElementById("Istanbul").innerHTML = worldClock(2, "Europe")
+  document.getElementById("Cairo").innerHTML = worldClock(2, "Cairo")
+  document.getElementById("Jerusalem").innerHTML = worldClock(2, "Israel")
+  document.getElementById("Beirut").innerHTML = worldClock(2, "Beirut")
+  document.getElementById("Moscow").innerHTML = worldClock(3, "Europe")
+  document.getElementById("Baghdad").innerHTML = worldClock(3, "Baghdad")
+  document.getElementById("Dubai").innerHTML = worldClock(4, "Dubai")
+  document.getElementById("Bangkok").innerHTML = worldClock(7, "Bangkok")
+  document.getElementById("Jakarta").innerHTML = worldClock(7, "Jakarta")
+  document.getElementById("HongKong").innerHTML = worldClock(8, "HongKong")
+  document.getElementById("Beijing").innerHTML = worldClock(8, "Beijing")
+  document.getElementById("Shanghai").innerHTML = worldClock(8, "Shanghai")
+  document.getElementById("Seoul").innerHTML = worldClock(9, "Seoul")
+  document.getElementById("Tokyo").innerHTML = worldClock(9, "Tokyo")
+  document.getElementById("Melbourne").innerHTML = worldClock(10, "Australia")
+  document.getElementById("Sydney").innerHTML = worldClock(10, "Australia")
+  document.getElementById("Brisbane").innerHTML = worldClock(10, "Brisbane")
+  document.getElementById("Vladivostok").innerHTML = worldClock(10, "Europe")
+  document.getElementById("Kamchatka").innerHTML = worldClock(12, "Europe")
+  
+  setTimeout("worldClockZone()", 1000)
+  }
+  window.onload=worldClockZone;
+  
+  //-->
+  </script>
+  
+  <style type="text/css">
+  .hrow {
+  font-weight:bold;
+  color: #C1E97C;
+  }
+  .hrow td{
+  padding-top: 20px;
+  width: 140px;
+  }
+  </style>
+</head>
+<body>
+
+<div class="container mb-3"><h1 class="text-center mb-4">Card Clock Bootstrap 4</h1>
+<p class="lead text-center">Original design Card hours from <a href="http://bootstraptema.ru/" target="_blank">BootstrapTema</a></p>
+<p class="lead text-center">You can use all basic classes of colors, change background color, change text color and border color hours</p>
+<h2 class="text-center col-xl-12">Flexbox Clock Bootstrap 4 Card</h2>
+<div class="clearfix"></div><hr />
+
+<!-- flexbox clock row --><div class="row">
+
+<div class="col-md-3">
+<div class="card bg-dark text-white">
+<h3 class="card-title text-center">
+<div class="d-flex flex-wrap justify-content-center mt-2">
+<a><span class="badge hours"></span></a> :
+<a><span class="badge min"></span></a> :
+<a><span class="badge sec"></span></a>
+</div>
+</h3>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card bg-primary text-white">
+<h3 class="card-title text-center">
+<div class="d-flex flex-wrap justify-content-center mt-2">
+<a><span class="badge hours"></span></a> :
+<a><span class="badge min"></span></a> :
+<a><span class="badge sec"></span></a>
+</div>
+</h3>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card bg-secondary text-white">
+<h3 class="card-title text-center">
+<div class="d-flex flex-wrap justify-content-center mt-2">
+<a><span class="badge hours"></span></a> :
+<a><span class="badge min"></span></a> :
+<a><span class="badge sec"></span></a>
+</div>
+</h3>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card bg-success text-white">
+<h3 class="card-title text-center">
+<div class="d-flex flex-wrap justify-content-center mt-2">
+<a><span class="badge hours"></span></a> :
+<a><span class="badge min"></span></a> :
+<a><span class="badge sec"></span></a>
+</div>
+</h3>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card bg-danger text-white">
+<h3 class="card-title text-center">
+<div class="d-flex flex-wrap justify-content-center mt-2">
+<a><span class="badge hours"></span></a> :
+<a><span class="badge min"></span></a> :
+<a><span class="badge sec"></span></a>
+</div>
+</h3>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card bg-warning text-white">
+<h3 class="card-title text-center">
+<div class="d-flex flex-wrap justify-content-center mt-2">
+<a><span class="badge hours"></span></a> :
+<a><span class="badge min"></span></a> :
+<a><span class="badge sec"></span></a>
+</div>
+</h3>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card bg-info text-white">
+<h3 class="card-title text-center">
+<div class="d-flex flex-wrap justify-content-center mt-2">
+<a><span class="badge hours"></span></a> :
+<a><span class="badge min"></span></a> :
+<a><span class="badge sec"></span></a>
+</div>
+</h3>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card bg-light">
+<h3 class="card-title text-center">
+<div class="d-flex flex-wrap justify-content-center mt-2">
+<a><span class="badge hours"></span></a> :
+<a><span class="badge min"></span></a> :
+<a><span class="badge sec"></span></a>
+</div>
+</h3>
+</div>
+</div>
+
+</div><!-- /.flexbox clock row -->
+
+ <h2 class="text-center col-xl-12 mt-4">Card Clock Bootstrap 4</h2><hr />
+
+<!-- clock row --><div class="row">
+
+<div class="col-md-3">
+<div class="card text-white">
+<div class="card-body bg-dark text-center">
+<p class="card-title mt-2">
+<a><span class="badge hours"></span></a> :
+<a><span class="badge min"></span></a> :
+<a><span class="badge sec"></span></a>
+</p>
+</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card text-white">
+<div class="card-body bg-primary text-center">
+<p class="card-title mt-2">
+<a><span class="badge hours"></span></a> :
+<a><span class="badge min"></span></a> :
+<a><span class="badge sec"></span></a>
+</p>
+</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card text-white">
+<div class="card-body bg-secondary text-center">
+<p class="card-title mt-2">
+<a><span class="badge hours"></span></a> :
+<a><span class="badge min"></span></a> :
+<a><span class="badge sec"></span></a>
+</p>
+</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card text-white">
+<div class="card-body bg-success text-center">
+<p class="card-title mt-2">
+<a><span class="badge hours"></span></a> :
+<a><span class="badge min"></span></a> :
+<a><span class="badge sec"></span></a>
+</p>
+</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card text-white">
+<div class="card-body bg-danger text-center">
+<p class="card-title mt-2">
+<a><span class="badge hours"></span></a> :
+<a><span class="badge min"></span></a> :
+<a><span class="badge sec"></span></a>
+</p>
+</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card text-white">
+<div class="card-body bg-warning text-center">
+<p class="card-title mt-2">
+<a><span class="badge hours"></span></a> :
+<a><span class="badge min"></span></a> :
+<a><span class="badge sec"></span></a>
+</p>
+</div>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card text-white">
+<div class="card-body bg-info text-center">
+<p class="card-title mt-2">
+<a><span class="badge hours"></span></a> :
+<a><span class="badge min"></span></a> :
+<a><span class="badge sec"></span></a>
+</p>
+</div>
+</div>
+</div>
+
+
+<div class="col-md-3">
+<div class="card bg-light">
+<div class="card-body bg-light text-center">
+<p class="card-title mt-2">
+<a><span class="badge hours"></span></a> :
+<a><span class="badge min"></span></a> :
+<a><span class="badge sec"></span></a>
+</p>
+</div>
+</div>
+</div>
+
+</div><!-- /.clock row -->
+
+</div><!-- /.container -->
+
+<script>
+$(document).ready(function() {
+setInterval( function() {
+var hours = new Date().getHours();
+$(".hours").html(( hours < 10 ? "0" : "" ) + hours);
+}, 1000);
+setInterval( function() {
+var minutes = new Date().getMinutes();
+$(".min").html(( minutes < 10 ? "0" : "" ) + minutes);
+},1000);
+setInterval( function() {
+var seconds = new Date().getSeconds();
+$(".sec").html(( seconds < 10 ? "0" : "" ) + seconds);
+},1000);
+});
+</script>
+
+<body>
+  </html>
